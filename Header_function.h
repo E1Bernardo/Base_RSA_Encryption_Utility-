@@ -1,9 +1,6 @@
 #ifndef RSA
 #define RSA
 
-#include <iostream>
-#include <vector>
-
 using namespace std;
 
 struct Console_key
@@ -12,18 +9,18 @@ struct Console_key
     string optional_key; // выбор типа шифрования 
 };
 
-void check_console_input(Console_key& console_input, int argc, char* argv[]);//int argc, char* argv[]
+void check_console_input(Console_key& console_input, int argc, char* argv[]);
 
 int verification_encryption_decryption(string file_name);
 
-int count_char_text(string file_name);
+void reading_simple_file(string file_name, std::vector <unsigned __int8> &simple_text);
 
-void reading_file(vector <unsigned __int8>& text, string file_name);
+void encryption_and_recording(std::vector <unsigned __int8>& simple_text, string file_name);
 
-void encryption_and_recording(vector <unsigned __int8>& simple_text, string file_name);
+void reading_encrypted_file(string file_name, std::vector <string> &simple_text);
 
-void decryption_and_recording(vector <unsigned short int>& cipher_text_vector, string file_name);
+void string_to_number(std::vector <string>& encrypted_text, std::vector <int> &encrypted_digit_text);
 
-void reading_file_encrypted_version(vector <unsigned short int>& text, string file_name);
+void decryption_and_recording(std::vector <int> encrypted_digit_text, string file_name);
 
 #endif

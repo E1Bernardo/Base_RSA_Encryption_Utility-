@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include<fstream>
+#include<string>
 #include"Header_function.h"
 
 using namespace std;
@@ -39,7 +40,7 @@ void check_console_input(Console_key& console_input, int argc, char* argv[])//in
 	if (key_console != "rsa" && key_console != "RSA") {
 		int hint = 0;
 		while (key_console != "rsa" && key_console != "RSA") {
-			cout << "Error, entering a nonexistent key: \n";
+			cout << "Error, entering a nonexistent key: \n\n";
 			cout << "Enter the key: ";
 			cin >> key_console;
 			std::cin.clear();
@@ -83,65 +84,61 @@ int verification_encryption_decryption(string file_name)
 		}
 	}
 	check_mark.close();
-
 }
 
-
-int count_char_text(string file_name)// —читаем колличество символов дл€ задани€ вектору размера.
+void reading_simple_file(string file_name, vector <unsigned __int8> &simple_text)
 {
-	fstream in;
-	in.open((file_name), fstream::binary | ios::in);
+	ifstream in;
+	in.open((file_name), fstream::binary | ios::in); 
 	int count_char = 0;
+	char sign;
 	if (!in.is_open()) {
 		cerr << "Error, the file didn't open";
-		exit(1);
+		exit(2);
 	}
 	else
 	{
 		while (!in.eof()) {
-			char sign;
-			in >> sign;
-			//in.read((char*)&ch, sizeof(ch));
+			sign = in.get();
+			//in.read((char*)&sign, sizeof(char));
+			simple_text.insert(simple_text.end(), sign);
+			//in.read((char*)&sign, sizeof(wchar_t));
 			count_char++;
 		}
-		count_char++;
 	}
 	in.close();
-	return count_char;
 }
 
-void reading_file(vector <unsigned __int8>& text, string file_name)
+void reading_encrypted_file(string file_name, vector <string> &encrypted_text)
 {
-	fstream in;
+	ifstream in;
 	in.open((file_name), fstream::binary | ios::in);
-
+	int count_char = 0;
+	string number{};
 	if (!in.is_open()) {
 		cerr << "Error, the file didn't open";
-		exit(1);
+		exit(3);
 	}
 	else
 	{
-		for (size_t i = 0; i < text.size(); i++) {
-			in.read((char*)&text[i], sizeof(unsigned __int8));
+		while (!in.eof()) {
+			string number{};
+			//getline(in, number);
+			in >> number;
+			encrypted_text.insert(encrypted_text.end(), number);
+			//in.read((char*)&sign, sizeof(wchar_t));
+			count_char++;
 		}
 	}
 	in.close();
 }
 
-void reading_file_encrypted_version(vector <unsigned short int>& text, string file_name)
+void string_to_number(vector <string> & encrypted_text, vector <int> &encrypted_digit_text)
 {
-	fstream in;
-	in.open((file_name), fstream::binary | ios::in);
-
-	if (!in.is_open()) {
-		cerr << "Error, the file didn't open";
-		exit(1);
-	}
-	else
+	int number_from_string;
+	for (size_t i = 0; i < encrypted_text.size(); i++)
 	{
-		for (size_t i = 0; i < text.size(); i++) {
-			in.read((char*)&text[i], sizeof(unsigned short int));
-		}
+		number_from_string = atoi(encrypted_text[i].c_str());
+		encrypted_digit_text.insert(encrypted_digit_text.end(), number_from_string);
 	}
-	in.close();
 }
